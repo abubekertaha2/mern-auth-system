@@ -1,5 +1,5 @@
 //backend/middleware/auth.js
-import User from '../models/userModel.js';
+import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
 const protect = async (req, res, next) => {
