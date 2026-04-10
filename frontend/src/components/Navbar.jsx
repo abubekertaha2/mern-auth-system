@@ -1,24 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext.jsx";
 
-function Navbar({ user, setUser }) {
+function Navbar() {
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
-
   const handleLogout = async () => {
-    try {``
+    try {
       await axios.post(
         "http://localhost:3000/api/users/logout",
         {},
         { withCredentials: true }
       );
-
-      setUser(null); 
+      setUser(null);
       navigate("/login");
     } catch (error) {
-      console.log("Logout failed", error);
+      console.error("Logout failed:", error);
     }
   };
-
+  console.log("User:", user);
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-700 text-white">
       <Link to="/" className="text-xl font-bold">
