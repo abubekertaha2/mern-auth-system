@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, ArrowRight} from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { loginUser, getCurrentUser} from "../lib/api.js";
 
 function Login() {
   const { setUser } = useAuth();
@@ -26,9 +27,22 @@ function Login() {
     setLoading(true);
     setError("");
 
+    // try {
+    //   await axios.post("http://localhost:3000/api/users/login", formData, { withCredentials: true });
+    //   const res = await axios.get("http://localhost:3000/api/users/me", { withCredentials: true });
+    //   setUser(res.data);
+    //   navigate("/dashboard");
+    // } catch (err) {
+    //   setError(err.response?.data?.message || "Invalid email or password");
+    // } finally {
+    //   setLoading(false);
+    // }
+
     try {
-      await axios.post("http://localhost:3000/api/users/login", formData, { withCredentials: true });
-      const res = await axios.get("http://localhost:3000/api/users/me", { withCredentials: true });
+      await loginUser(formData);
+
+      const res = await getCurrentUser();
+
       setUser(res.data);
       navigate("/dashboard");
     } catch (err) {

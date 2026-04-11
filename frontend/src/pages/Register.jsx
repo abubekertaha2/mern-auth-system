@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { registerUser, getCurrentUser } from "../lib/api.js";
 
 function Register( {setUser} ) {
   const navigate = useNavigate();
@@ -17,15 +18,27 @@ function Register( {setUser} ) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // try {
+    //   const response = await axios.post("http://localhost:3000/api/users/register", formData, {
+    //     withCredentials: true 
+    //   });
+    //   console.log("User registered:", response.data);
+    //   setUser(response.data);
+    //   navigate("/dashboard");
+    // } catch (error) {
+    //   console.error("Error registering user:", error);
+    // }
     try {
-      const response = await axios.post("http://localhost:3000/api/users/register", formData, {
-        withCredentials: true 
-      });
-      console.log("User registered:", response.data);
-      setUser(response.data);
+      await registerUser(formData);
+      const res = await getCurrentUser();
+
+      setUser(res.data);
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Error registering user:", error);
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
