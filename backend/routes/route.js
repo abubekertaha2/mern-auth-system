@@ -141,8 +141,8 @@ router.post("/login", async (req, res) => {
     // 3. Set Cookie with security flags
     res.cookie("token", token, {
       httpOnly: true, // Prevents XSS
-      secure: process.env.NODE_ENV === "production", // Only over HTTPS in production
-      sameSite: "Strict", 
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None", 
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 

@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json())
 dotenv.config()
 app.use(cors(
-    {origin: 'https://mern-auth-system-oeqqmyp5m-abubekertaha2s-projects.vercel.app',
+    {origin: 'https://mern-auth-system-oh9i3ftq2-abubekertaha2s-projects.vercel.app',
     credentials: true,
   }
 ));

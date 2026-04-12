@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 node_modules
 .env
 dist
 build
-=======
-node_modules/
-.env.env.env
->>>>>>> 18722b4 (add refined backend files)
