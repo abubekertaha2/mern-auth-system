@@ -166,7 +166,7 @@ router.post("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
+    sameSite: "None",
   });
   res.status(200).json({ message: "Logged out successfully" });
 });
@@ -187,12 +187,3 @@ const generateToken = (id) => {
 
 export default router;
 
-// import express from "express";
-// import { register, login } from "../controller/user.controller.js";
-
-// const router = express.Router();
-
-// router.post("/api/users/register", register);
-// router.post("/api/users/login", login);
-
-// export default router;
