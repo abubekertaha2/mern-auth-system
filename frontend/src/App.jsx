@@ -10,7 +10,7 @@ import { getCurrentUser } from "./lib/api.js";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ ADD THIS
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchUser = async () => {
