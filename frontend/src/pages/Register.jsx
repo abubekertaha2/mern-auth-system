@@ -1,15 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
 import { registerUser, getCurrentUser } from "../lib/api.js";
 
-function Register( {setUser} ) {
+function Register({ setUser }) {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,25 +21,20 @@ function Register( {setUser} ) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const response = await axios.post("http://localhost:3000/api/users/register", formData, {
-    //     withCredentials: true 
-    //   });
-    //   console.log("User registered:", response.data);
-    //   setUser(response.data);
-    //   navigate("/dashboard");
-    // } catch (error) {
-    //   console.error("Error registering user:", error);
-    // }
+    setLoading(true);
+    setError("");
+
     try {
       await registerUser(formData);
-      const res = await getCurrentUser();
 
+      const res = await getCurrentUser();
       setUser(res.data);
+
       navigate("/dashboard");
 
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
+
     } finally {
       setLoading(false);
     }
@@ -45,61 +43,65 @@ function Register( {setUser} ) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <section className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+
         <h2 className="text-2xl font-bold mb-2 text-center">
           User Registration
         </h2>
+
         <p className="text-gray-500 text-sm text-center mb-6">
           This is a simple user registration application.
         </p>
 
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-3">
+            {error}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col">
-            <label htmlFor="name" className="text-sm font-medium mb-1">
-              Name
-            </label>
-            <input
-              value={formData.name}
-              onChange={handleChange}
-              name="name"
-              type="text"
-              placeholder="Enter your name"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm font-medium mb-1">
-              Email
-            </label>
-            <input
-              value={formData.email}
-              onChange={handleChange}
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm font-medium mb-1">
-              Password
-            </label>
-            <input
-              value={formData.password}
-              onChange={handleChange}
-              name="password"
-              type="password"
-              placeholder="Enter password"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+
+          <input
+            value={formData.name}
+            onChange={handleChange}
+            name="name"
+            placeholder="Name"
+            className="border p-2 w-full rounded"
+          />
+
+          <input
+            value={formData.email}
+            onChange={handleChange}
+            name="email"
+            placeholder="Email"
+            className="border p-2 w-full rounded"
+          />
+
+          <input
+            value={formData.password}
+            onChange={handleChange}
+            name="password"
+            type="password"
+            placeholder="Password"
+            className="border p-2 w-full rounded"
+          />
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg"
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
+
         </form>
-        <p className="text-gray-500 text-sm text-center mt-4">Do you have an account? <a href="/login" className="text-blue-500 hover:underline">Log in</a></p>
+
+        <p className="text-gray-500 text-sm text-center mt-4">
+          Do you have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Log in
+          </a>
+        </p>
+
       </section>
     </div>
   );

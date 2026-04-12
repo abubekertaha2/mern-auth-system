@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { motion } from "framer-motion";
@@ -26,17 +25,6 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    // try {
-    //   await axios.post("http://localhost:3000/api/users/login", formData, { withCredentials: true });
-    //   const res = await axios.get("http://localhost:3000/api/users/me", { withCredentials: true });
-    //   setUser(res.data);
-    //   navigate("/dashboard");
-    // } catch (err) {
-    //   setError(err.response?.data?.message || "Invalid email or password");
-    // } finally {
-    //   setLoading(false);
-    // }
 
     try {
       await loginUser(formData);
