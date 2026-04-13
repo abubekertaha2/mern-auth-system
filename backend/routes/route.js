@@ -22,6 +22,12 @@ router.post("/register", async (req, res) => {
 
     const user = await User.create({ name, email, password });
     const token = generateToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({
       id: user._id,
       name: user.name,
