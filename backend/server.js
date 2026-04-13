@@ -9,11 +9,16 @@ import cookieParser from 'cookie-parser';
 const app = express();
 app.use(express.json())
 dotenv.config()
-app.use(cors(
-    {origin: 'https://mern-auth-system-cgrzw340b-abubekertaha2s-projects.vercel.app/',
-    credentials: true,
-  }
-));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || origin.includes("vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(cookieParser());
 const Port = process.env.PORT || 3000;
 
